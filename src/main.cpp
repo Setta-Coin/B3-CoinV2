@@ -1292,7 +1292,7 @@ unsigned int GetNextTargetRequired(const CBlockIndex* pindexLast, bool fProofOfS
 
     if ( Params().NetworkID() == CChainParams::TESTNET ){
         CBigNum bnTestTarget;
-        bnTestTarget = CBigNum(~uint256(0) >> 9);
+        bnTestTarget = CBigNum(~uint256(0) >> 20);
         return bnTargetLimit.GetCompact();
     }
 
