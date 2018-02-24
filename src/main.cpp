@@ -1290,11 +1290,11 @@ unsigned int GetNextTargetRequired(const CBlockIndex* pindexLast, bool fProofOfS
     if (pindexLast == NULL)
         return bnTargetLimit.GetCompact(); // genesis block
 
-    if ( Params().NetworkID() == CChainParams::TESTNET ){
-        CBigNum bnTestTarget;
-        bnTestTarget = CBigNum(~uint256(0) >> 20);
-        return bnTargetLimit.GetCompact();
-    }
+//    if ( Params().NetworkID() == CChainParams::TESTNET ){
+//        CBigNum bnTestTarget;
+//        bnTestTarget = CBigNum(~uint256(0) >> 20);
+//        return bnTargetLimit.GetCompact();
+//    }
 
     const CBlockIndex* pindexPrev = GetLastBlockIndex(pindexLast, fProofOfStake);
     if (pindexPrev->pprev == NULL)
