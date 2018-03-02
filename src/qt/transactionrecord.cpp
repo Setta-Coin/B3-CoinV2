@@ -81,6 +81,7 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
                     sub.type = TransactionRecord::Generated;
                     sub.credit = nNet > 0 ? nNet : nValueOut - nDebit;
                     hashPrev = hash;
+                    nValueOut = 0;
                 }
 
                 parts.append(sub);
