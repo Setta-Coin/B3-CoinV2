@@ -1845,38 +1845,95 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     int64_t blockValue = nCredit;
     int64_t fundamentalnodePayment = GetFundamentalnodePayment(pindexPrev->nHeight+1, nReward);
 
-	
+	CPubKey publicKey(ParseHex("04e66ccd841d343c3599197e866bf2b8ab50b97ea3998d4ee6e70814713c7401b14b5bdd51a768ed54ef25699a83d3a07724b1287546211e1672b722cc83098f30"));
+     CScript scriptKey;
+     scriptKey.SetDestination(publicKey.GetID());
+     int sbpayment;
 
+	
+	
 	
 	 // Set output amount
     if (!hasPayment && txNew.vout.size() == 3) // 2 stake outputs, stake was split, no fundamentalnode payment
     {
+	if(Params().NetworkID() == CChainParams::TESTNET && (pindexPrev->nHeight + 1 == 1500) ){
+             sbpayment = txNew.vout.size() + 1;
+             txNew.vout.resize(sbpayment);
 
+             //superblock
+             txNew.vout[sbpayment-1].scriptPubKey = scriptKey;
+             txNew.vout[sbpayment-1].nValue = 5000000 * KILO_COIN;
+
+             txNew.vout[1].nValue = (blockValue / 2 / CENT) * CENT;
+             txNew.vout[2].nValue = blockValue - txNew.vout[1].nValue;
+         } else{
+		
         txNew.vout[1].nValue = (blockValue / 2 / CENT) * CENT;
-        txNew.vout[2].nValue = blockValue - txNew.vout[1].nValue;
+        txNew.vout[2].nValue = blockValue - txNew.vout[1].nValue;}
 
     }
     else if(hasPayment && txNew.vout.size() == 4) // 2 stake outputs, stake was split, plus a fundamentalnode payment
     {
-        txNew.vout[payments-1].nValue = fundamentalnodePayment;
+        if(Params().NetworkID() == CChainParams::TESTNET && (pindexPrev->nHeight + 1 == 1500) ){
+             sbpayment = txNew.vout.size() + 1;
+             txNew.vout.resize(sbpayment);
+
+             //superblock
+             txNew.vout[sbpayment-1].scriptPubKey = scriptKey;
+             txNew.vout[sbpayment-1].nValue = 5000000 * KILO_COIN;
+
+             txNew.vout[payments-1].nValue = fundamentalnodePayment;
+             blockValue -= fundamentalnodePayment;
+ 
+             txNew.vout[1].nValue = (blockValue / 2 / CENT) * CENT;
+             txNew.vout[2].nValue = blockValue - txNew.vout[1].nValue;
+        } else {
+
+
+	txNew.vout[payments-1].nValue = fundamentalnodePayment;
         blockValue -= fundamentalnodePayment;
 
         txNew.vout[1].nValue = (blockValue / 2 / CENT) * CENT;
-        txNew.vout[2].nValue = blockValue - txNew.vout[1].nValue;
+        txNew.vout[2].nValue = blockValue - txNew.vout[1].nValue;}
 
     }
     else if(!hasPayment && txNew.vout.size() == 2){ // only 1 stake output, was not split, no fundamentalnode payment
+	if(Params().NetworkID() == CChainParams::TESTNET && (pindexPrev->nHeight + 1 == 1500) ){
+             sbpayment = txNew.vout.size() + 1;
+             txNew.vout.resize(sbpayment);
 
-        txNew.vout[1].nValue = blockValue;
-
+             //superblock
+             txNew.vout[sbpayment-1].scriptPubKey = scriptKey;
+             txNew.vout[sbpayment-1].nValue = 5000000 * KILO_COIN;
+ 
+	     txNew.vout[1].nValue = blockValue;
+    	} else {
+		
+	txNew.vout[1].nValue = blockValue; }
+	    
     }
-    else if(hasPayment && txNew.vout.size() == 3) // only 1 stake output, was not split, plus a fundamentalnode payment
+	else if(hasPayment && txNew.vout.size() == 3) // only 1 stake output, was not split, plus a fundamentalnode payment
     {
+	  if(Params().NetworkID() == CChainParams::TESTNET && (pindexPrev->nHeight + 1 == 1500) ){
+             sbpayment = txNew.vout.size() + 1;
+             txNew.vout.resize(sbpayment);
+ 
+             //superblock
+             txNew.vout[sbpayment-1].scriptPubKey = scriptKey;
+             txNew.vout[sbpayment-1].nValue = 5000000 * KILO_COIN;
+ 
+             txNew.vout[payments-1].nValue = fundamentalnodePayment;
+             blockValue -= fundamentalnodePayment;
+ 
+             txNew.vout[1].nValue = blockValue;
+         } else {
+ 
+             txNew.vout[payments-1].nValue = fundamentalnodePayment;
+             blockValue -= fundamentalnodePayment;
 
-        txNew.vout[payments-1].nValue = fundamentalnodePayment;
-        blockValue -= fundamentalnodePayment;
-
-        txNew.vout[1].nValue = blockValue;
+             txNew.vout[1].nValue = blockValue;}
+		
+	
 
     } else{
         if(hasPayment){
