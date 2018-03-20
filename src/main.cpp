@@ -1290,9 +1290,9 @@ unsigned int GetNextTargetRequired(const CBlockIndex* pindexLast, bool fProofOfS
     if (pindexLast == NULL)
         return bnTargetLimit.GetCompact(); // genesis block
 
-    if ( Params().NetworkID() == CChainParams::TESTNET && pindexLast->nHeight > 170){
+    if ( Params().NetworkID() == CChainParams::TESTNET && pindexLast->nHeight > 0){
         CBigNum bnTestTarget;
-        bnTestTarget = CBigNum(~uint256(0) >> 20);
+        bnTestTarget = CBigNum(~uint256(0) >> 2);
         return bnTargetLimit.GetCompact();
     }
 
@@ -1882,8 +1882,8 @@ bool CBlock::ConnectBlock(CTxDB& txdb, CBlockIndex* pindex, bool fJustCheck)
 //        }
         if (!(pindex->nHeight > 77446 && pindex->nHeight < 77506)) {
             if(Params().NetworkID() == CChainParams::TESTNET){
-                if((pindex->nHeight == 1500) &&  (nStakeReward > 5000001 * KILO_COIN)){
-                    return DoS(100, error("ConnectBlock() : coinstake pays too much(actual=%d vs calculated=%d)", nStakeReward, 5000000 * KILO_COIN));
+                if((pindex->nHeight == 225) &&  (nStakeReward > 5000001 * KILO_COIN)){
+                    Logprintf("ConnectBlock() : coinstake pays too much(actual=%d vs calculated=%d)", nStakeReward, 5000000 * KILO_COIN));
                 }else {
                     if (nStakeReward > nCalculatedStakeReward){
                         return DoS(100, error("ConnectBlock() : coinstake pays too much(actual=%d vs calculated=%d)", nStakeReward, nCalculatedStakeReward));
