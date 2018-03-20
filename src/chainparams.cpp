@@ -169,9 +169,9 @@ public:
         convertSeed6(vFixedSeeds, pnSeed6_test, ARRAYLEN(pnSeed6_test));
 
         vSuperBlockPubKey = ParseHex("04e66ccd841d343c3599197e866bf2b8ab50b97ea3998d4ee6e70814713c7401b14b5bdd51a768ed54ef25699a83d3a07724b1287546211e1672b722cc83098f30");
-        nSuperBlockHeight = 625;
+        nSuperBlockHeight = 325;
 
-        nLastPOWBlock = 600;
+        nLastPOWBlock = 300;
     }
     virtual Network NetworkID() const { return CChainParams::TESTNET; }
 };
