@@ -1290,7 +1290,7 @@ unsigned int GetNextTargetRequired(const CBlockIndex* pindexLast, bool fProofOfS
     if (pindexLast == NULL)
         return bnTargetLimit.GetCompact(); // genesis block
 
-    if ( Params().NetworkID() == CChainParams::TESTNET && pindexLast->nHeight > 499){
+    if ( Params().NetworkID() == CChainParams::TESTNET && pindexLast->nHeight > 170){
         CBigNum bnTestTarget;
         bnTestTarget = CBigNum(~uint256(0) >> 20);
         return bnTargetLimit.GetCompact();
