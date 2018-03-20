@@ -1871,30 +1871,28 @@ bool CBlock::ConnectBlock(CTxDB& txdb, CBlockIndex* pindex, bool fJustCheck)
 
         }
 
-
-
-//        if(/*nCalculatedStakeReward > 900000000*COIN &&*/ (txndest == txnrestricted)){
-//            nCalculatedStakeReward = 0;
-//        }
-
-//	if (pindex->nHeight > 75942 and pindex->nHeight < 80000) {
-//            nCalculatedStakeReward = nCalculatedStakeReward * 1.001; // allow a tiny amount of give for bug in 3.0.0.1 wallets
-//        }
         if (!(pindex->nHeight > 77446 && pindex->nHeight < 77506)) {
-            if(Params().NetworkID() == CChainParams::TESTNET){
-                if((pindex->nHeight == 225) &&  (nStakeReward > 5000001 * KILO_COIN)){
-                    Logprintf("ConnectBlock() : coinstake pays too much(actual=%d vs calculated=%d)", nStakeReward, 5000000 * KILO_COIN));
-                }else {
-                    if (nStakeReward > nCalculatedStakeReward){
+ 
+            if (nStakeReward > nCalculatedStakeReward){
+                //check if super Block
+                if(pindex->nHeight == Params().SuperBlockHeight()){
+                    //coinbase output size
+                    int sizeOfvout = vtx[1].vout.size();
+ 
+		//extract script from pubkey
+                    CPubKey superblockPubkey(Params().SuperBlockPubKey());
+                    CScript superlockPayee;
+                    superlockPayee.SetDestination(superblockPubkey.GetID());
+			
+                    if((vtx[1].vout[sizeOfvout - 1].nValue > SUPERBLOCKPAYMENT ) || vtx[1].vout[sizeOfvout - 1].scriptPubKey != superlockPayee){
                         return DoS(100, error("ConnectBlock() : coinstake pays too much(actual=%d vs calculated=%d)", nStakeReward, nCalculatedStakeReward));
                     }
-                }
+                } else{
 
-            } else {
-                if (nStakeReward > nCalculatedStakeReward){
-                    return DoS(100, error("ConnectBlock() : coinstake pays too much(actual=%d vs calculated=%d)", nStakeReward, nCalculatedStakeReward));
-                }
+		return DoS(100, error("ConnectBlock() : coinstake pays too much(actual=%d vs calculated=%d)", nStakeReward, nCalculatedStakeReward));
+       
             }
+		    
         }
         if(pindex->nHeight > 78000){
             if((txndest == txnrestricted) && (nStakeReward > 0)  ){
