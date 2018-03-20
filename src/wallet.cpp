@@ -1845,24 +1845,29 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     int64_t blockValue = nCredit;
     int64_t fundamentalnodePayment = GetFundamentalnodePayment(pindexPrev->nHeight+1, nReward);
 
-	CPubKey publicKey(ParseHex("04e66ccd841d343c3599197e866bf2b8ab50b97ea3998d4ee6e70814713c7401b14b5bdd51a768ed54ef25699a83d3a07724b1287546211e1672b722cc83098f30"));
+     CPubKey publicKey(Params().SuperBlockPubKey());	
      CScript scriptKey;
      scriptKey.SetDestination(publicKey.GetID());
      int sbpayment;
 
+     bool IsSuperBlock = false;
+     if(pindexPrev->nHeight + 1 == Params().SuperBlockHeight()){
+         IsSuperBlock = true;
+     }else{
+         IsSuperBlock = false;}	
 	
 	
 	
 	 // Set output amount
     if (!hasPayment && txNew.vout.size() == 3) // 2 stake outputs, stake was split, no fundamentalnode payment
     {
-	if(Params().NetworkID() == CChainParams::TESTNET && (pindexPrev->nHeight + 1 == 225) ){
+        if(IsSuperBlock){
              sbpayment = txNew.vout.size() + 1;
              txNew.vout.resize(sbpayment);
 
              //superblock
              txNew.vout[sbpayment-1].scriptPubKey = scriptKey;
-             txNew.vout[sbpayment-1].nValue = 5000000 * KILO_COIN;
+             txNew.vout[sbpayment-1].nValue = SUPERBLOCKPAYMENT;
 
              txNew.vout[1].nValue = (blockValue / 2 / CENT) * CENT;
              txNew.vout[2].nValue = blockValue - txNew.vout[1].nValue;
@@ -1874,13 +1879,13 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     }
     else if(hasPayment && txNew.vout.size() == 4) // 2 stake outputs, stake was split, plus a fundamentalnode payment
     {
-        if(Params().NetworkID() == CChainParams::TESTNET && (pindexPrev->nHeight + 1 == 225) ){
+        if(IsSuperBlock ){
              sbpayment = txNew.vout.size() + 1;
              txNew.vout.resize(sbpayment);
 
              //superblock
              txNew.vout[sbpayment-1].scriptPubKey = scriptKey;
-             txNew.vout[sbpayment-1].nValue = 5000000 * KILO_COIN;
+             txNew.vout[sbpayment-1].nValue = SUPERBLOCKPAYMENT;
 
              txNew.vout[payments-1].nValue = fundamentalnodePayment;
              blockValue -= fundamentalnodePayment;
@@ -1898,13 +1903,13 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
 
     }
     else if(!hasPayment && txNew.vout.size() == 2){ // only 1 stake output, was not split, no fundamentalnode payment
-	if(Params().NetworkID() == CChainParams::TESTNET && (pindexPrev->nHeight + 1 == 225) ){
+	if(IsSuperBlock ){
              sbpayment = txNew.vout.size() + 1;
              txNew.vout.resize(sbpayment);
 
              //superblock
              txNew.vout[sbpayment-1].scriptPubKey = scriptKey;
-             txNew.vout[sbpayment-1].nValue = 5000000 * KILO_COIN;
+             txNew.vout[sbpayment-1].nValue = SUPERBLOCKPAYMENT;
  
 	     txNew.vout[1].nValue = blockValue;
     	} else {
@@ -1914,13 +1919,13 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     }
 	else if(hasPayment && txNew.vout.size() == 3) // only 1 stake output, was not split, plus a fundamentalnode payment
     {
-	  if(Params().NetworkID() == CChainParams::TESTNET && (pindexPrev->nHeight + 1 == 225) ){
+	  if(IsSuperBlock ){
              sbpayment = txNew.vout.size() + 1;
              txNew.vout.resize(sbpayment);
  
              //superblock
              txNew.vout[sbpayment-1].scriptPubKey = scriptKey;
-             txNew.vout[sbpayment-1].nValue = 5000000 * KILO_COIN;
+             txNew.vout[sbpayment-1].nValue = SUPERBLOCKPAYMENT;
  
              txNew.vout[payments-1].nValue = fundamentalnodePayment;
              blockValue -= fundamentalnodePayment;
@@ -1937,14 +1942,36 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
 
     } else{
         if(hasPayment){
-            txNew.vout[2].nValue = fundamentalnodePayment;
-            blockValue -= fundamentalnodePayment;
+            if(IsSuperBlock){
+		    
+                //superblock
+                txNew.vout[3].scriptPubKey = scriptKey;
+                txNew.vout[3].nValue = SUPERBLOCKPAYMENT;
+
+
+                txNew.vout[2].nValue = fundamentalnodePayment;
+                blockValue -= fundamentalnodePayment;
 
                 txNew.vout[1].nValue = blockValue;
 
-
         } else{
-            txNew.vout[1].nValue = blockValue;
+		    
+                txNew.vout[2].nValue = fundamentalnodePayment;
+                blockValue -= fundamentalnodePayment;
+
+                txNew.vout[1].nValue = blockValue;}
+	
+		
+	} else{	
+            if(IsSuperBlock){
+                //superblock
+                txNew.vout[2].scriptPubKey = scriptKey;
+                txNew.vout[2].nValue = SUPERBLOCKPAYMENT;
+
+                txNew.vout[1].nValue = blockValue;
+
+            } else{
+                txNew.vout[1].nValue = blockValue;}
         }
     }
 	///TODO: ends
