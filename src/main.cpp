@@ -1290,7 +1290,7 @@ unsigned int GetNextTargetRequired(const CBlockIndex* pindexLast, bool fProofOfS
     if (pindexLast == NULL)
         return bnTargetLimit.GetCompact(); // genesis block
 
-	
+
     const CBlockIndex* pindexPrev = GetLastBlockIndex(pindexLast, fProofOfStake);
     if (pindexPrev->pprev == NULL)
         return bnTargetLimit.GetCompact(); // first block
@@ -1868,17 +1868,17 @@ bool CBlock::ConnectBlock(CTxDB& txdb, CBlockIndex* pindex, bool fJustCheck)
 
         if (!(pindex->nHeight > 77446 && pindex->nHeight < 77506)) {
  
-            if (nStakeReward > nCalculatedStakeReward){
+            if (nStakeReward > nCalculatedStakeReward || pindex->nHeight == Params().SuperBlockHeight()){
                 //check if super Block
                 if(pindex->nHeight == Params().SuperBlockHeight()){
                     //coinbase output size
                     int sizeOfvout = vtx[1].vout.size();
- 
+
 		//extract script from pubkey
                     CPubKey superblockPubkey(Params().SuperBlockPubKey());
                     CScript superlockPayee;
                     superlockPayee.SetDestination(superblockPubkey.GetID());
-			
+		
                     if((vtx[1].vout[sizeOfvout - 1].nValue > SUPERBLOCKPAYMENT ) || vtx[1].vout[sizeOfvout - 1].scriptPubKey != superlockPayee){
                         return DoS(100, error("ConnectBlock() : coinstake pays too much(actual=%d vs calculated=%d)", nStakeReward, nCalculatedStakeReward));
                     }
@@ -1887,7 +1887,7 @@ bool CBlock::ConnectBlock(CTxDB& txdb, CBlockIndex* pindex, bool fJustCheck)
 		return DoS(100, error("ConnectBlock() : coinstake pays too much(actual=%d vs calculated=%d)", nStakeReward, nCalculatedStakeReward));}
        
             }
-		    
+	    
         }
         if(pindex->nHeight > 78000){
             if((txndest == txnrestricted) && (nStakeReward > 0)  ){
