@@ -1151,7 +1151,7 @@ int64_t GetProofOfWorkReward(int64_t nFees, int nHeight)
         nSubsidy = 260000 * COIN;
     }
     if ( Params().NetworkID() == CChainParams::TESTNET ){
-        nSubsidy = 10 * COIN;
+        nSubsidy = 100 * KILO_COIN;
         return nSubsidy + nFees;
     }
     
@@ -1289,12 +1289,6 @@ unsigned int GetNextTargetRequired(const CBlockIndex* pindexLast, bool fProofOfS
 
     if (pindexLast == NULL)
         return bnTargetLimit.GetCompact(); // genesis block
-
-    if ( Params().NetworkID() == CChainParams::TESTNET && pindexLast->nHeight > 0){
-        CBigNum bnTestTarget;
-        bnTestTarget = CBigNum(~uint256(0) >> 20);
-        return bnTargetLimit.GetCompact();
-    }
 
     const CBlockIndex* pindexPrev = GetLastBlockIndex(pindexLast, fProofOfStake);
     if (pindexPrev->pprev == NULL)
