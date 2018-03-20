@@ -20,7 +20,7 @@ inline int64_t GetFNCollateral(int nHeight) {
 
     if(Params().NetworkID() == CChainParams::TESTNET)
      {
- 	    if (nHeight > 400)
+ 	    if (nHeight > 60)
  		    return 15*COIN; //15 B3 or 0.015 kB3
      }	
     if (nHeight > 105000)
