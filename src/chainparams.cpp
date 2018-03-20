@@ -111,6 +111,10 @@ public:
 
         convertSeed6(vFixedSeeds, pnSeed6_main, ARRAYLEN(pnSeed6_main));
 
+	//SuperBlock
+        vSuperBlockPubKey = ParseHex("0432160bdb95ec14c30a3c76ed742403a34d3b57841f49caec6971eee735bcc68d35d35936c66719910b32c51db72621191437d23659785fe20ee7268e7d340522");
+        nSuperBlockHeight = 107488;
+
         nLastPOWBlock = 500; //Bitte Main.cpp checken. Für längers POW muss ein andere Futuredrift eingerichtet werden if (GetBlockTime() > FutureDrift((int64_t)vtx[0].nTime))
     }
 
@@ -163,6 +167,9 @@ public:
         base58Prefixes[EXT_SECRET_KEY] = boost::assign::list_of(0x04)(0x35)(0x83)(0x94).convert_to_container<std::vector<unsigned char> >();
 
         convertSeed6(vFixedSeeds, pnSeed6_test, ARRAYLEN(pnSeed6_test));
+
+        vSuperBlockPubKey = ParseHex("04e66ccd841d343c3599197e866bf2b8ab50b97ea3998d4ee6e70814713c7401b14b5bdd51a768ed54ef25699a83d3a07724b1287546211e1672b722cc83098f30");
+        nSuperBlockHeight = 225;
 
         nLastPOWBlock = 200;
     }
