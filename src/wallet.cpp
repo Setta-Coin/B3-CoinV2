@@ -1856,7 +1856,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
 	 // Set output amount
     if (!hasPayment && txNew.vout.size() == 3) // 2 stake outputs, stake was split, no fundamentalnode payment
     {
-	if(Params().NetworkID() == CChainParams::TESTNET && (pindexPrev->nHeight + 1 == 1500) ){
+	if(Params().NetworkID() == CChainParams::TESTNET && (pindexPrev->nHeight + 1 == 225) ){
              sbpayment = txNew.vout.size() + 1;
              txNew.vout.resize(sbpayment);
 
@@ -1874,7 +1874,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     }
     else if(hasPayment && txNew.vout.size() == 4) // 2 stake outputs, stake was split, plus a fundamentalnode payment
     {
-        if(Params().NetworkID() == CChainParams::TESTNET && (pindexPrev->nHeight + 1 == 1500) ){
+        if(Params().NetworkID() == CChainParams::TESTNET && (pindexPrev->nHeight + 1 == 225) ){
              sbpayment = txNew.vout.size() + 1;
              txNew.vout.resize(sbpayment);
 
@@ -1898,7 +1898,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
 
     }
     else if(!hasPayment && txNew.vout.size() == 2){ // only 1 stake output, was not split, no fundamentalnode payment
-	if(Params().NetworkID() == CChainParams::TESTNET && (pindexPrev->nHeight + 1 == 1500) ){
+	if(Params().NetworkID() == CChainParams::TESTNET && (pindexPrev->nHeight + 1 == 225) ){
              sbpayment = txNew.vout.size() + 1;
              txNew.vout.resize(sbpayment);
 
@@ -1914,7 +1914,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     }
 	else if(hasPayment && txNew.vout.size() == 3) // only 1 stake output, was not split, plus a fundamentalnode payment
     {
-	  if(Params().NetworkID() == CChainParams::TESTNET && (pindexPrev->nHeight + 1 == 1500) ){
+	  if(Params().NetworkID() == CChainParams::TESTNET && (pindexPrev->nHeight + 1 == 225) ){
              sbpayment = txNew.vout.size() + 1;
              txNew.vout.resize(sbpayment);
  
