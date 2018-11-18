@@ -47,13 +47,13 @@ static const int64_t MIN_TX_FEE = 0.1 * COIN;
 /** Fees smaller than this (in satoshi) are considered zero fee (for relaying) */
 static const int64_t MIN_RELAY_TX_FEE = MIN_TX_FEE;
 /** No amount larger than this (in satoshi) is valid */
-static const int64_t MAX_MONEY = 662200000000 * COIN; // 2500 million
+static const int64_t MAX_MONEY = 100000000 * COIN; // 100 million
 static const int64_t CIRCULATION_MONEY = MAX_MONEY;
 inline bool MoneyRange(int64_t nValue) { return (nValue >= 0 && nValue <= MAX_MONEY); }
 /** Threshold for nLockTime: below this value it is interpreted as block number, otherwise as UNIX timestamp. */
 static const unsigned int LOCKTIME_THRESHOLD = 500000000; // Tue Nov  5 00:53:20 1985 UTC
 /** Block spacing */
-static const unsigned int nStakeTargetSpacing = 360; // 300 s
+static const unsigned int nStakeTargetSpacing = 360; // 360 s
 static const int64_t nTargetTimespan = 360 * 20; // 120 min
 static const int64_t nTargetSpacingWorkMax = 3 * nStakeTargetSpacing; 
 /** 10% annual reward */
