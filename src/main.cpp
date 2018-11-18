@@ -1174,66 +1174,62 @@ int64_t GetProofOfStakeReward(const CBlockIndex* pindexPrev, int64_t nCoinAge, i
 	int64_t staticreward = COIN * 1;
     nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8);
 	
-	if(pindexPrev->nHeight >= VAR10K*100) //1000K
+	if(pindexPrev->nHeight >= VAR10K*50) //500K
 	{
-	nSubsidy = nSubsidy*5;
-	LogPrint("reation", "Init 5P Block:%d GetProofOfStakeReward(): create=%s nCoinAge=%d\n", pindexPrev->nHeight, FormatMoney(nSubsidy), nCoinAge);
+	nSubsidy = nSubsidy*3;
+	LogPrint("creation", "Init 3P Block:%d GetProofOfStakeReward(): create=%s nCoinAge=%d\n", pindexPrev->nHeight, FormatMoney(nSubsidy), nCoinAge);
 	return nSubsidy + nFees + staticreward;
 	}
-	if(pindexPrev->nHeight >= VAR10K*11) //110K
+	if(pindexPrev->nHeight >= VAR10K*40) //400K
+	{
+	nSubsidy = nSubsidy*4;
+	LogPrint("creation", "Init 4P Block:%d GetProofOfStakeReward(): create=%s nCoinAge=%d\n", pindexPrev->nHeight, FormatMoney(nSubsidy), nCoinAge);
+	return nSubsidy + nFees + staticreward;
+	}
+	if(pindexPrev->nHeight >= VAR10K*30) //300K
+	{
+	nSubsidy = nSubsidy*5;
+	LogPrint("creation", "Init 5P Block:%d GetProofOfStakeReward(): create=%s nCoinAge=%d\n", pindexPrev->nHeight, FormatMoney(nSubsidy), nCoinAge);
+	return nSubsidy + nFees + staticreward;
+	}
+	if(pindexPrev->nHeight >= VAR10K*25) //250K
+	{
+	nSubsidy = nSubsidy*6;
+	LogPrint("creation", "Init 6P Block:%d GetProofOfStakeReward(): create=%s nCoinAge=%d\n", pindexPrev->nHeight, FormatMoney(nSubsidy), nCoinAge);
+	return nSubsidy + nFees + staticreward;
+	}
+	if(pindexPrev->nHeight >= VAR10K*20) //200K
+	{
+	nSubsidy = nSubsidy*8;
+	LogPrint("creation", "Init 8P Block:%d GetProofOfStakeReward(): create=%s nCoinAge=%d\n", pindexPrev->nHeight, FormatMoney(nSubsidy), nCoinAge);
+	return nSubsidy + nFees + staticreward;
+	}
+	if(pindexPrev->nHeight >= VAR10K*15) //150K
+	{
+	nSubsidy = nSubsidy*10;
+	LogPrint("creation", "Init 10P Init 8P Block:%d GetProofOfStakeReward(): create=%s nCoinAge=%d\n", pindexPrev->nHeight, FormatMoney(nSubsidy), nCoinAge);
+	return nSubsidy + nFees + staticreward;
+	}
+	if(pindexPrev->nHeight >= VAR10K*10) //100K
+	{
+	nSubsidy = nSubsidy*15;
+	LogPrint("creation", "Init 15P Block:%d GetProofOfStakeReward(): create=%s nCoinAge=%d\n", pindexPrev->nHeight, FormatMoney(nSubsidy), nCoinAge);
+	return nSubsidy + nFees + staticreward;
+	}
+	if(pindexPrev->nHeight >= VAR10K*5) //50K
+	{
+	nSubsidy = nSubsidy*18;
+	LogPrint("creation", "Init 18P Block:%d GetProofOfStakeReward(): create=%s nCoinAge=%d\n", pindexPrev->nHeight, FormatMoney(nSubsidy), nCoinAge);
+	return nSubsidy + nFees + staticreward;
+	}
+	if(pindexPrev->nHeight >= VAR10K*1) //10K
 	{
 	nSubsidy = nSubsidy*20;
 	LogPrint("creation", "Init 20P Block:%d GetProofOfStakeReward(): create=%s nCoinAge=%d\n", pindexPrev->nHeight, FormatMoney(nSubsidy), nCoinAge);
 	return nSubsidy + nFees + staticreward;
 	}
-	if(pindexPrev->nHeight >= VAR10K*8) //80K
-	{
-	nSubsidy = nSubsidy*100;
-	LogPrint("creation", "Init 100P Block:%d GetProofOfStakeReward(): create=%s nCoinAge=%d\n", pindexPrev->nHeight, FormatMoney(nSubsidy), nCoinAge);
-	return nSubsidy + nFees + staticreward;
-	}
-	if(pindexPrev->nHeight >= VAR10K*6) //60K
-	{
-	nSubsidy = nSubsidy*10000;
-	LogPrint("creation", "Init 10000P Block:%d GetProofOfStakeReward(): create=%s nCoinAge=%d\n", pindexPrev->nHeight, FormatMoney(nSubsidy), nCoinAge);
-	return nSubsidy + nFees + staticreward;
-	}
-	if(pindexPrev->nHeight >= VAR10K*5) //50K
-	{
-	nSubsidy = nSubsidy*1000;
-	LogPrint("creation", "Init 1000 P Block:%d GetProofOfStakeReward(): create=%s nCoinAge=%d\n", pindexPrev->nHeight, FormatMoney(nSubsidy), nCoinAge);
-	return nSubsidy + nFees + staticreward;
-	}
-	if(pindexPrev->nHeight >= VAR10K*4) //40K
-	{
-	nSubsidy = nSubsidy*100;
-	LogPrint("creation", "Init 100P Init 8P Block:%d GetProofOfStakeReward(): create=%s nCoinAge=%d\n", pindexPrev->nHeight, FormatMoney(nSubsidy), nCoinAge);
-	return nSubsidy + nFees + staticreward;
-	}
-	if(pindexPrev->nHeight >= VAR10K*3) //30K
-	{
-	nSubsidy = nSubsidy*50;
-	LogPrint("creation", "Init 50P Block:%d GetProofOfStakeReward(): create=%s nCoinAge=%d\n", pindexPrev->nHeight, FormatMoney(nSubsidy), nCoinAge);
-	return nSubsidy + nFees + staticreward;
-	}
-	if(pindexPrev->nHeight >= VAR10K*2) //20K
-	{
-	nSubsidy = nSubsidy*25;
-	LogPrint("creation", "Init 25P Block:%d GetProofOfStakeReward(): create=%s nCoinAge=%d\n", pindexPrev->nHeight, FormatMoney(nSubsidy), nCoinAge);
-	return nSubsidy + nFees + staticreward;
-	}
-	if(pindexPrev->nHeight >= VAR10K*1) //10K
-	{
-	nSubsidy = nSubsidy*15;
-	LogPrint("reation", "Init 15P Block:%d GetProofOfStakeReward(): create=%s nCoinAge=%d\n", pindexPrev->nHeight, FormatMoney(nSubsidy), nCoinAge);
-	return nSubsidy + nFees + staticreward;
-	}
-	LogPrint("creation", "Debug Pre Creation 1000 Block:%d GetProofOfStakeReward(): create=%s nCoinAge=%d\n", pindexPrev->nHeight, FormatMoney(nSubsidy), nCoinAge);
-	nSubsidy = nSubsidy*1000; //DEBUG
-	LogPrint("creation", "Debug Creation 1000 Block:%d GetProofOfStakeReward(): create=%s nCoinAge=%d\n", pindexPrev->nHeight, FormatMoney(nSubsidy), nCoinAge);
-	nSubsidy = nSubsidy/1000; //DEBUG
-	nSubsidy = nSubsidy*8;
-	LogPrint("creation", "Init 8P Block:%d GetProofOfStakeReward(): create=%s nCoinAge=%d\n", pindexPrev->nHeight, FormatMoney(nSubsidy), nCoinAge);
+	nSubsidy = nSubsidy*1000000; 
+	LogPrint("creation", "Debug Creation 1000000P Block:%d GetProofOfStakeReward(): create=%s nCoinAge=%d\n", pindexPrev->nHeight, FormatMoney(nSubsidy), nCoinAge);
 	return nSubsidy + nFees + staticreward;
 }
 
